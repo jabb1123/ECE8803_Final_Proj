@@ -8,8 +8,6 @@ import argparse
 import os
 import copy
 
-from sklearn.mixture import GaussianMixture
-
 
 LABELS_Severity = {35: 0,
                    43: 0,
@@ -48,7 +46,6 @@ class OCTDataset(Dataset):
         self._labels = self.annot['Severity_Label'].values
         assert len(self.path_list) == len(self._labels)
         # idx_each_class = [[] for i in range(self.nb_classes)]
-        print("Sucess")
 
     def __getitem__(self, index):
         img, target = Image.open(self.root+self.path_list[index]).convert("L"), self._labels[index]
@@ -72,12 +69,5 @@ if __name__ == '__main__':
     args = parse_args()
     trainset = OCTDataset(args, 'train', transform=transform)
     testset = OCTDataset(args, 'test', transform=transform)
-    gmm = GaussianMixture(n_components=3)
-    print(trainset._labels)
-    for sample in trainset:
-        for im in sample:
-            # print(im.shape)
-            features = im.reshape(-1,1)
-            # print(features)
-            gmm.fit(features)
-    print(len(trainset), len(testset))
+    # print(trainset[1][0].shape)
+    # print(len(trainset), len(testset))
